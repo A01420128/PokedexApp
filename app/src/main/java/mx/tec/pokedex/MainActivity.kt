@@ -28,6 +28,9 @@ si, recibimos una lista en Pokemones
 ¿en qué hilo se crea la lista?
 En el mismo hila en donde corre la interfaz grafica.
 
+Pregunta 12 ¿Cómo utilizarás jetpack compose en tu proyecto?
+Lo vamos a ocupar en la actividad de landing page.
+
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
