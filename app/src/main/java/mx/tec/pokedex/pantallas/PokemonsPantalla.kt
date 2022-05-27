@@ -3,6 +3,8 @@ package mx.tec.pokedex.service
 import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -14,9 +16,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import mx.tec.pokedex.data.PokemonResultResponse
+import mx.tec.pokedex.mvmm.PokemonViewModel
 
 @Composable
 fun PokemonsPantalla(navController: NavController) {
+    val pokemonViewModel: PokemonViewModel = PokemonViewModel()
     // Agrega un icono que hace back y un titulo a la top app bar.
     Scaffold(topBar = {
         TopAppBar() {
@@ -28,12 +33,13 @@ fun PokemonsPantalla(navController: NavController) {
             Text(text = "Pokedex List")
         }
     }) {
-        Pokemones()
+        Pokemones(pokemons = pokemonViewModel.listaPokemons)
+        pokemonViewModel.getPokemons()
     }
 }
 
 @Composable
-private fun Pokemon(name: String) {
+private fun Pokemon(result: PokemonResultResponse) {
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -51,7 +57,7 @@ private fun Pokemon(name: String) {
                     .padding(bottom = extraPadding)
             ) {
                 Text(text = "Pokemon: ")
-                Text(text = name)
+                Text(text = result.name)
             }
             // Es botton de enfasis medio, que tiene un contorno.
             OutlinedButton(onClick = { expanded.value = !expanded.value }) {
@@ -62,15 +68,12 @@ private fun Pokemon(name: String) {
 }
 
 @Composable
-private fun Pokemones(cameos: List<String> = List(10) { "$it"}) {
+private fun Pokemones(pokemons: List<PokemonResultResponse>) {
     val scrollState = rememberScrollState()
     
-    Column(modifier = Modifier
-        .padding(vertical = 5.dp)
-        .verticalScroll(scrollState)
-    ) {
-        for (cameo in cameos) {
-            Pokemon(name = cameo)
+    LazyColumn{
+        itemsIndexed(items = pokemons){index, item ->
+            Pokemon (result = item)
         }
     }
 }

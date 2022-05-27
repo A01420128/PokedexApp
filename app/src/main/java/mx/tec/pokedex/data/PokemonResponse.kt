@@ -1,4 +1,4 @@
-package mx.tec.pokedex.data.response
+package mx.tec.pokedex.data
 
 import com.google.gson.annotations.SerializedName
 
